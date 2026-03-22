@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  
+  <title>MongoDB - NoSQL</title>
+</head>
+<body>
+
+  <!-- BLOCO 1 -->
+  <div class="bloco">
+    <div class="bloco-title">🔴 Bloco 1 — Fundação</div>
+    <div class="op-grid">
+      <div class="op">
+        <div class="op-name">use &lt;db&gt;</div>
+        <div class="op-desc">Entra ou cria um banco</div>
+        <div class="op-ex">use dbloja</div>
+      </div>
+      <div class="op">
+        <div class="op-name">show dbs</div>
+        <div class="op-desc">Lista todos os bancos</div>
+      </div>
+      <div class="op">
+        <div class="op-name">cls / exit</div>
+        <div class="op-desc">Limpa o terminal / sai do mongosh</div>
+      </div>
+      <div class="op">
+        <div class="op-name">db.dropDatabase()</div>
+        <div class="op-desc">Deleta o banco atual</div>
+        <div class="op-warn">⚠ sem volta</div>
+      </div>
+      <div class="op">
+        <div class="op-name">insertOne({})</div>
+        <div class="op-desc">Insere um documento</div>
+        <div class="op-ex">db.col.insertOne({nome: "x"})</div>
+      </div>
+      <div class="op">
+        <div class="op-name">insertMany([])</div>
+        <div class="op-desc">Insere vários de uma vez</div>
+        <div class="op-ex">db.col.insertMany([{}, {}])</div>
+      </div>
+      <div class="op">
+        <div class="op-name">find(filtro, proj)</div>
+        <div class="op-desc">Busca documentos. 2º arg = projeção (1 mostrar, 0 esconder). _id vem sempre, esconda com _id:0</div>
+        <div class="op-ex">db.col.find({}, {nome:1, _id:0})</div>
+      </div>
+      <div class="op">
+        <div class="op-name">findOne(filtro)</div>
+        <div class="op-desc">Retorna só o primeiro resultado</div>
+      </div>
+      <div class="op">
+        <div class="op-name">updateOne(f, op)</div>
+        <div class="op-desc">Atualiza o primeiro que bater o filtro</div>
+        <div class="op-ex">db.col.updateOne({nome:"x"}, {$set:{preco:9}})</div>
+      </div>
+      <div class="op">
+        <div class="op-name">updateMany(f, op)</div>
+        <div class="op-desc">Atualiza todos que baterem o filtro</div>
+      </div>
+      <div class="op">
+        <div class="op-name">deleteOne(filtro)</div>
+        <div class="op-desc">Deleta o primeiro que bater o filtro</div>
+      </div>
+      <div class="op">
+        <div class="op-name">deleteMany(filtro)</div>
+        <div class="op-desc">Deleta todos que baterem. {} = apaga tudo</div>
+        <div class="op-warn">⚠ deleteMany({}) apaga tudo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 2 -->
+  <div class="bloco">
+    <div class="bloco-title">🟠 Bloco 2 — Operadores de query</div>
+    <div class="op-grid">
+      <div class="op">
+        <div class="op-name">$gt / $gte</div>
+        <div class="op-desc">Maior que / maior ou igual</div>
+        <div class="op-ex">{preco: {$gt: 100}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$lt / $lte</div>
+        <div class="op-desc">Menor que / menor ou igual</div>
+        <div class="op-ex">{estoque: {$lte: 15}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$ne</div>
+        <div class="op-desc">Diferente de (um valor só). Use $nin pra lista</div>
+        <div class="op-ex">{marca: {$ne: "Nike"}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$in</div>
+        <div class="op-desc">Valor dentro de uma lista (OU)</div>
+        <div class="op-ex">{marca: {$in: ["Nike","Puma"]}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$nin</div>
+        <div class="op-desc">Valor fora de uma lista</div>
+        <div class="op-ex">{marca: {$nin: ["Adidas"]}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$and</div>
+        <div class="op-desc">Todos os filtros verdadeiros. Necessário quando dois filtros atingem o mesmo campo</div>
+        <div class="op-ex">{$and: [{marca:"Nike"},{preco:{$gt:100}}]}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$or</div>
+        <div class="op-desc">Pelo menos um filtro verdadeiro</div>
+        <div class="op-ex">{$or: [{marca:"Nike"},{preco:{$lt:50}}]}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$not</div>
+        <div class="op-desc">Inverte o filtro</div>
+        <div class="op-ex">{preco: {$not: {$gt: 100}}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$exists</div>
+        <div class="op-desc">Verifica se campo existe (true) ou não (false)</div>
+        <div class="op-ex">{nome: {$exists: false}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$type</div>
+        <div class="op-desc">Filtra pelo tipo do campo</div>
+        <div class="op-ex">{preco: {$type: "number"}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$regex</div>
+        <div class="op-desc">Busca por padrão de texto. ^ = começa, $ = termina</div>
+        <div class="op-ex">{nome: {$regex: "^J"}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$expr</div>
+        <div class="op-desc">Compara dois campos do mesmo documento entre si</div>
+        <div class="op-ex">{$expr: {$lt: ["$estoque","$preco"]}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 3 -->
+  <div class="bloco">
+    <div class="bloco-title">🟡 Bloco 3 — Operadores de update</div>
+    <div class="op-grid">
+      <div class="op">
+        <div class="op-name">$set</div>
+        <div class="op-desc">Altera ou cria um campo</div>
+        <div class="op-ex">{$set: {preco: 99}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$unset</div>
+        <div class="op-desc">Remove um campo. Valor sempre ""</div>
+        <div class="op-ex">{$unset: {estoque: ""}}</div>
+        <div class="op-warn">⚠ valor sempre "" independente do tipo</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$inc</div>
+        <div class="op-desc">Incrementa (negativo = decrementa)</div>
+        <div class="op-ex">{$inc: {estoque: -5}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$mul</div>
+        <div class="op-desc">Multiplica o valor do campo</div>
+        <div class="op-ex">{$mul: {preco: 1.1}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$rename</div>
+        <div class="op-desc">Renomeia um campo</div>
+        <div class="op-ex">{$rename: {preco: "valor"}}</div>
+        <div class="op-warn">⚠ novo nome sempre entre aspas</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$min</div>
+        <div class="op-desc">Atualiza só se novo valor for MENOR que o atual</div>
+        <div class="op-ex">{$min: {preco: 199}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$max</div>
+        <div class="op-desc">Atualiza só se novo valor for MAIOR que o atual</div>
+        <div class="op-ex">{$max: {estoque: 200}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$setOnInsert</div>
+        <div class="op-desc">Só executa ao CRIAR via upsert. Ignorado em updates normais</div>
+        <div class="op-ex">{$setOnInsert: {marca:"X"}}, {upsert:true}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 4 -->
+  <div class="bloco">
+    <div class="bloco-title">🟢 Bloco 4 — Arrays</div>
+    <div class="op-grid">
+      <div class="op">
+        <div class="op-name">$push</div>
+        <div class="op-desc">Adiciona item no final do array. Aceita duplicatas</div>
+        <div class="op-ex">{$push: {compras: "Tênis"}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$addToSet</div>
+        <div class="op-desc">Igual ao $push mas ignora duplicatas</div>
+        <div class="op-ex">{$addToSet: {compras: "Meia"}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$pull</div>
+        <div class="op-desc">Remove todos os itens que batem o critério</div>
+        <div class="op-ex">{$pull: {compras: "Meia"}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$pullAll</div>
+        <div class="op-desc">Remove lista exata de valores. Sem condição</div>
+        <div class="op-ex">{$pullAll: {compras: ["Meia","Boné"]}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$pop</div>
+        <div class="op-desc">Remove o primeiro (-1) ou último (1) item</div>
+        <div class="op-ex">{$pop: {compras: -1}}</div>
+        <div class="op-warn">⚠ só aceita 1 ou -1</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$each</div>
+        <div class="op-desc">Usado com $push ou $addToSet pra inserir vários itens</div>
+        <div class="op-ex">{$push: {compras: {$each: ["A","B"]}}}</div>
+        <div class="op-warn">⚠ sem $each, array vira item único</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$position</div>
+        <div class="op-desc">Insere em posição específica. Usado com $each</div>
+        <div class="op-ex">{$push: {compras: {$each:["X"], $position:0}}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$slice</div>
+        <div class="op-desc">Limita tamanho do array após push. Usado com $each</div>
+        <div class="op-ex">{$push: {compras: {$each:["X"], $slice:3}}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$sort (array)</div>
+        <div class="op-desc">Ordena o array após inserir. Usado com $each. 1=A→Z, -1=Z→A</div>
+        <div class="op-ex">{$push: {compras: {$each:["X"], $sort:1}}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$all</div>
+        <div class="op-desc">Array precisa ter TODOS os valores (E). Diferente de $in (OU)</div>
+        <div class="op-ex">{compras: {$all: ["Meia","Jaqueta"]}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$elemMatch</div>
+        <div class="op-desc">Condições devem bater no MESMO objeto do array. Evita falso positivo</div>
+        <div class="op-ex">{pedidos: {$elemMatch: {item:"Tênis", valor:{$gt:200}}}}</div>
+      </div>
+      <div class="op">
+        <div class="op-name">$size</div>
+        <div class="op-desc">Busca arrays com tamanho exato. Não aceita $gt/$lt</div>
+        <div class="op-ex">{compras: {$size: 3}}</div>
+        <div class="op-warn">⚠ só número exato, sem operadores</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 5 -->
+  <div class="bloco">
+    <div class="bloco-title">🔵 Bloco 5 — Avançado</div>
+    <div class="op-grid">
+      <div class="op">
+        <div class="op-name">count()</div>
+        <div class="op-desc">Conta quantos documentos batem o filtro</div>
+        <div class="op-ex">db.col.find({marca:"Nike"}).count()</div>
+      </div>
+      <div class="op">
+        <div class="op-name">sort()</div>
+        <div class="op-desc">Ordena o resultado. 1=crescente, -1=decrescente</div>
+        <div class="op-ex">db.col.find().sort({preco: -1})</div>
+      </div>
+      <div class="op">
+        <div class="op-name">pretty()</div>
+        <div class="op-desc">Formata o resultado legível (automático no mongosh moderno)</div>
+        <div class="op-ex">db.col.find().pretty()</div>
+      </div>
+      <div class="op">
+        <div class="op-name">findOneAndDelete()</div>
+        <div class="op-desc">Acha, retorna e deleta em uma tacada</div>
+        <div class="op-ex">db.col.findOneAndDelete({nome:"X"})</div>
+      </div>
+      <div class="op">
+        <div class="op-name">findOneAndUpdate()</div>
+        <div class="op-desc">Acha e atualiza. Retorna antes por padrão. Use returnDocument:"after"</div>
+        <div class="op-ex">db.col.findOneAndUpdate({nome:"X"}, {$set:{p:1}}, {returnDocument:"after"})</div>
+      </div>
+      <div class="op">
+        <div class="op-name">findOneAndReplace()</div>
+        <div class="op-desc">Substitui o documento inteiro. Não usa $set</div>
+        <div class="op-ex">db.col.findOneAndReplace({nome:"X"}, {nome:"X", preco:9})</div>
+        <div class="op-warn">⚠ não use $set — passa o doc novo direto</div>
+      </div>
+      <div class="op">
+        <div class="op-name">new Date() / ISODate()</div>
+        <div class="op-desc">Armazena data. Sem aspas = tipo Date, comparável com $gt/$lt</div>
+        <div class="op-ex">{criadoEm: new Date("2024-01-15")}</div>
+        <div class="op-warn">⚠ string "2024-01-15" não é tipo Date</div>
+      </div>
+      <div class="op">
+        <div class="op-name">typeof</div>
+        <div class="op-desc">JS puro no terminal. Verifica tipo de um valor</div>
+        <div class="op-ex">typeof "texto" // "string"</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
